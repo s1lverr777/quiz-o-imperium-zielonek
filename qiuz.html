@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imperium Zielonek – Quiz</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 25px 15px;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: linear-gradient(135deg, #17132e, #29205c, #10172e);
+}
+
+.container {
+    max-width: 750px;
+    margin: 30px auto;
+    padding: 30px;
+    background: rgba(15, 15, 35, 0.95);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+h1 {
+    text-align: center;
+    color: #c7a7ff;
+    margin-top: 0;
+}
+
+.subtitle {
+    text-align: center;
+    color: #c8c3dc;
+    line-height: 1.6;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #7648d8, #a45de0);
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.02);
+    filter: brightness(1.15);
+}
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+}
+
+#disclaimer,
+#quizScreen {
+    display: none;
+}
+
+.question {
+    background: #252342;
+    padding: 18px;
+    margin: 18px 0;
+    border-radius: 14px;
+    border: 1px solid #39345f;
+}
+
+.question h3 {
+    margin-top: 0;
+    color: #d8c5ff;
+}
+
+.answer {
+    display: block;
+    padding: 11px;
+    margin: 8px 0;
+    border-radius: 9px;
+    background: #343052;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.answer:hover {
+    background: #4b4278;
+}
+
+.answer input {
+    margin-right: 10px;
+    accent-color: #a45de0;
+}
+
+#result {
+    display: none;
+    text-align: center;
+    margin-top: 25px;
+    padding: 20px;
+    background: #252342;
+    border-radius: 15px;
+}
+
+#result h2 {
+    color: #d8c5ff;
+}
+
+#certificateSection {
+    display: none;
+    margin-top: 30px;
+}
+
+.certificate {
+    padding: 35px 25px;
+    text-align: center;
+    color: #34220b;
+    background: linear-gradient(135deg, #fff5cf, #f3d98e, #fff1bd);
+    border: 8px double #a77a22;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+}
+
+.certificate h2 {
+    color: #805515;
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+.certificate h3 {
+    color: #6b4610;
+    font-size: 20px;
+}
+
+.certificate p {
+    line-height: 1.7;
+}
+
+.certificate .playerName {
+    font-size: 25px;
+    font-weight: bold;
+    color: #714612;
+    margin: 15px 0;
+    overflow-wrap: anywhere;
+}
+
+.certificate .score {
+    font-size: 22px;
+    font-weight: bold;
+    color: #805515;
+}
+
+#playerNick {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 9px;
+    border: 1px solid #777;
+    font-size: 16px;
+}
+
+.disclaimerText {
+    line-height: 1.7;
+    color: #e2def2;
+}
+
+.disclaimerText strong {
+    color: #d8c5ff;
+}
+
+.acceptLabel {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 20px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.acceptLabel input {
+    margin-top: 4px;
+    accent-color: #a45de0;
+    transform: scale(1.2);
+}
+
+footer {
+    text-align: center;
+    color: #8983a8;
+    font-size: 12px;
+    margin-top: 30px;
+}
+
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+
+    .container {
+        display: none !important;
+    }
+
+    #certificateSection {
+        display: block !important;
+        margin: 0;
+    }
+
+    .certificate {
+        box-shadow: none;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #playerNick,
+    #printButton,
+    .noPrint {
+        display: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- EKRAN POWITALNY -->
+    <div id="welcome">
+        <h1>👑 Imperium Zielonek</h1>
+
+        <p class="subtitle">
+            Myślisz, że znasz Imperium Zielonek?
+            Sprawdźmy to!
+        </p>
+
+        <button onclick="startQuiz()">Zaczynajmy!</button>
+    </div>
+
+
+    <!-- DISCLAIMER -->
+    <div id="disclaimer">
+        <h1>⚠️ WAŻNA INFORMACJA</h1>
+
+        <div class="question disclaimerText">
+            <p>
+                Wszystko przedstawione w tym quizie ma charakter
+                humorystyczny i jest stworzone wyłącznie dla żartów.
+            </p>
+
+            <p>
+                Szymon Łyczko oraz jego rodzina są postaciami fikcyjnymi
+                w ramach tego quizu.
+            </p>
+
+            <p>
+                Autor nie ma na celu nikogo obrazić ani urazić.
+                Quiz nie jest oficjalnym materiałem.
+            </p>
+
+            <p>
+                <strong>
+                    Rozwiązujesz quiz na własną odpowiedzialność
+                    i z dystansem do żartów.
+                </strong>
+            </p>
+        </div>
+
+        <label class="acceptLabel">
+            <input
+                type="checkbox"
+                id="acceptDisclaimer"
+                onchange="toggleContinue()"
+            >
+            Zapoznałem/am się z informacją i akceptuję jej treść.
+        </label>
+
+        <button
+            id="continueButton"
+            onclick="continueToQuiz()"
+            disabled
+        >
+            Przechodzę do quizu!
+        </button>
+    </div>
+
+
+    <!-- QUIZ -->
+    <div id="quizScreen">
+        <h1>📜 Quiz Imperium Zielonek</h1>
+
+        <p class="subtitle">
+            Odpowiedz na wszystkie pytania i sprawdź swoją wiedzę!
+        </p>
+
+        <form id="quizForm">
+
+            <div class="question">
+                <h3>1. Gdzie mieszka Szymon Łyczko?</h3>
+
+                <label class="answer">
+                    <input type="radio" name="q1" value="A">
+                    A. Ząbki
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q1" value="B">
+                    B. Tczew
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q1" value="C">
+                    C. Zielonki
+                </label>
+            </div>
+
+
+            <div class="question">
+                <h3>2. Kto jest tatą Szymona?</h3>
+
+                <label class="answer">
+                    <input type="radio" name="q2" value="A">
+                    A. Dariusz
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q2" value="B">
+                    B. Tymon
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q2" value="C">
+                    C. Seweryn Koparka
+                </label>
+            </div>
+
+
+            <div class="question">
+                <h3>3. Czym zamawiamy Tymona Łyczko?</h3>
+
+                <label class="answer">
+                    <input type="radio" name="q3" value="A">
+                    A. Tirem
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q3" value="B">
+                    B. Paczką
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q3" value="C">
+                    C. Z odbiorem osobistym
+                </label>
+            </div>
+
+
+            <div class="question">
+                <h3>4. Kto jest panią lekkich obyczajów w jego rodzinie?</h3>
+
+                <label class="answer">
+                    <input type="radio" name="q4" value="A">
+                    A. Siostra
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q4" value="B">
+                    B. Mama
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q4" value="C">
+                    C. Obydwaj
+                </label>
+            </div>
+
+
+            <div class="question">
+                <h3>5. Jaki nick ma Szymon Łyczko w Minecraft?</h3>
+
+                <label class="answer">
+                    <input type="radio" name="q5" value="A">
+                    A. Cookbyboba
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q5" value="B">
+                    B. Szymonek67
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q5" value="C">
+                    C. Szczypalo_maczeciarz
+                </label>
+            </div>
+
+
+            <div class="question">
+                <h3>6. Dlaczego Szymon ma lagi?</h3>
+
+                <label class="answer">
+                    <input type="radio" name="q6" value="A">
+                    A. Bo ma internet z GigaInternet
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q6" value="B">
+                    B. Bo Tymon przegryzł kabel
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q6" value="C">
+                    C. Bo trzyma router
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q6" value="D">
+                    D. Wszystkie są poprawne
+                </label>
+            </div>
+
+
+            <div class="question">
+                <h3>7. Dlaczego Szymon nie gra na Elfmc.aternos.me?</h3>
+
+                <label class="answer">
+                    <input type="radio" name="q7" value="A">
+                    A. Bo grzeje spawna
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q7" value="B">
+                    B. Bo się boi Bossa Japko_00
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q7" value="C">
+                    C. Bo nie ma premki
+                </label>
+            </div>
+
+            <button type="button" onclick="checkAnswers()">
+                Sprawdź wynik!
+            </button>
+
+        </form>
+
+
+        <!-- WYNIK -->
+        <div id="result">
+            <h2 id="scoreText"></h2>
+            <p id="resultMessage"></p>
+        </div>
+
+
+        <!-- CERTYFIKAT -->
+        <div id="certificateSection">
+
+            <h1>🏆 Gratulacje!</h1>
+
+            <p class="subtitle">
+                Odblokowano specjalny certyfikat za wynik 7/7!
+            </p>
+
+            <input
+                type="text"
+                id="playerNick"
+                maxlength="30"
+                placeholder="Wpisz swój nick..."
+                oninput="updateCertificate()"
+            >
+
+            <div class="certificate" id="certificate">
+
+                <h2>🏆 CERTYFIKAT 🏆</h2>
+
+                <h3>WIEDZY O ŁYCZKOWSKICH</h3>
+
+                <p>
+                    Niniejszym potwierdza się, że
+                </p>
+
+                <div class="playerName" id="certificateNick">
+                    Tajemniczy Gracz
+                </div>
+
+                <p>
+                    uzyskał/a maksymalny wynik w oficjalnym
+                    quizie Imperium Zielonek!
+                </p>
+
+                <div class="score">7 / 7 PUNKTÓW</div>
+
+                <p>
+                    Osoba ta wykazała się doskonałą wiedzą
+                    o Szymonie Łyczko, Łyczkowskich
+                    oraz całym Imperium Zielonek.
+                </p>
+
+                <p>
+                    <strong>Niech Imperium Zielonek trwa! 👑</strong>
+                </p>
+
+            </div>
+
+            <button id="printButton" onclick="window.print()">
+                🖨️ Drukuj / Zapisz jako PDF
+            </button>
+
+        </div>
+
+    </div>
+
+    <footer>
+        Imperium Zielonek © Quiz stworzony dla zabawy
+    </footer>
+
+</div>
+
+
+<script>
+
+// PRZEJŚCIE DO DISCLAIMERU
+function startQuiz() {
+    document.getElementById("welcome").style.display = "none";
+    document.getElementById("disclaimer").style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+// SPRAWDZANIE ZGODY
+function toggleContinue() {
+    const accepted =
+        document.getElementById("acceptDisclaimer").checked;
+
+    document.getElementById("continueButton").disabled = !accepted;
+}
+
+
+// PRZEJŚCIE DO QUIZU
+function continueToQuiz() {
+
+    if (!document.getElementById("acceptDisclaimer").checked) {
+        return;
+    }
+
+    document.getElementById("disclaimer").style.display = "none";
+    document.getElementById("quizScreen").style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+// SPRAWDZANIE ODPOWIEDZI
+function checkAnswers() {
+
+    const correctAnswers = {
+        q1: "C",
+        q2: "A",
+        q3: "B",
+        q4: "C",
+        q5: "A",
+        q6: "D",
+        q7: "B"
+    };
+
+    let score = 0;
+    let unanswered = 0;
+
+    for (let question in correctAnswers) {
+
+        const selected = document.querySelector(
+            'input[name="' + question + '"]:checked'
+        );
+
+        if (!selected) {
+            unanswered++;
+        } else if (selected.value === correctAnswers[question]) {
+            score++;
+        }
+    }
+
+    if (unanswered > 0) {
+        alert("Odpowiedz na wszystkie pytania!");
+        return;
+    }
+
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("scoreText").textContent =
+        "Twój wynik: " + score + "/7";
+
+    let message = "";
+
+    if (score === 7) {
+        message = "LEGENDARNY WYNIK! Znasz Szymona lepiej niż on sam! 🏆";
+    } else if (score === 6) {
+        message = "Hahahahahahahahahahaha 6 7 ouuuuuu cziki boiii tuff six seven";
+    } else if (score === 5) {
+        message = "Bardzo dobrze! Znasz Szymona! 😎";
+    } else if (score >= 3) {
+        message = "Całkiem nieźle, ale mogło być lepiej 😂";
+    } else {
+        message = "Trzeba nadrobić wiedzę o Szymonie! 💀";
+    }
+
+    document.getElementById("resultMessage").textContent = message;
+
+    // CERTYFIKAT TYLKO ZA 7/7
+    if (score === 7) {
+        document.getElementById("certificateSection").style.display = "block";
+        updateCertificate();
+    } else {
+        document.getElementById("certificateSection").style.display = "none";
+    }
+
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+    });
+}
+
+
+// AKTUALIZOWANIE NICKU NA CERTYFIKACIE
+function updateCertificate() {
+
+    const nick = document.getElementById("playerNick").value.trim();
+
+    document.getElementById("certificateNick").textContent =
+        nick || "Tajemniczy Gracz";
+}
+
+</script>
+
+</body>
+</html>
