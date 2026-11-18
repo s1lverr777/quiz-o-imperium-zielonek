@@ -66,7 +66,6 @@ button:disabled {
     opacity: 0.4;
     cursor: not-allowed;
     transform: none;
-    filter: none;
 }
 
 #disclaimer,
@@ -170,7 +169,6 @@ button:disabled {
 .certificate h2 {
     color: #805515;
     font-size: 26px;
-    margin-bottom: 10px;
 }
 
 .certificate h3 {
@@ -182,7 +180,7 @@ button:disabled {
     line-height: 1.7;
 }
 
-.certificate .playerName {
+.playerName {
     font-size: 25px;
     font-weight: bold;
     color: #714612;
@@ -199,7 +197,7 @@ button:disabled {
 #playerNick {
     width: 100%;
     padding: 12px;
-    margin-top: 15px;
+    margin: 15px 0;
     border-radius: 9px;
     border: 1px solid #777;
     font-size: 16px;
@@ -234,6 +232,175 @@ footer {
     color: #8983a8;
     font-size: 12px;
     margin-top: 30px;
+}
+
+/* SEKRETNE ZAKOŃCZENIE */
+
+#secretEnding {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    overflow-y: auto;
+    background:
+        radial-gradient(ellipse at center, #35205e 0%, #100b20 55%, #03020a 100%);
+    text-align: center;
+    padding: 25px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#secretEnding.active {
+    display: flex;
+    animation: screenAppear 1.5s ease;
+}
+
+.endingContent {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 700px;
+}
+
+.endingSmall {
+    color: #c5a4ff;
+    letter-spacing: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    animation: fadeIn 2s ease;
+}
+
+#endingTitle {
+    font-size: clamp(35px, 8vw, 70px);
+    color: white;
+    text-shadow:
+        0 0 10px #a45de0,
+        0 0 30px #a45de0,
+        0 0 60px #7648d8;
+    margin: 25px 0;
+    animation: titleAppear 2s ease;
+}
+
+#endingReveal {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: 1.5s ease;
+}
+
+#endingReveal.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.endingStory {
+    font-size: clamp(19px, 4vw, 27px);
+    line-height: 1.6;
+    color: #eee4ff;
+}
+
+.endingBig {
+    display: block;
+    color: #d8b6ff;
+    font-size: clamp(25px, 6vw, 43px);
+    font-weight: bold;
+    margin: 25px 0;
+    text-shadow: 0 0 25px #a45de0;
+}
+
+.endingRank {
+    margin-top: 25px;
+    padding: 20px;
+    border: 2px solid #a45de0;
+    border-radius: 15px;
+    background: rgba(110, 60, 180, 0.2);
+    color: #f0ddff;
+    font-size: 22px;
+    font-weight: bold;
+    box-shadow: 0 0 30px rgba(164,93,224,0.3);
+}
+
+#returnButton {
+    max-width: 350px;
+    margin: 30px auto 0;
+    background: linear-gradient(90deg, #8b42dc, #c078ff);
+    box-shadow: 0 0 25px rgba(164,93,224,0.5);
+}
+
+/* BŁYSKI */
+
+.light {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 15px 5px #b77cff;
+    animation: sparkle 3s infinite;
+}
+
+.light:nth-child(1) { top: 15%; left: 15%; }
+.light:nth-child(2) { top: 25%; left: 85%; animation-delay: .5s; }
+.light:nth-child(3) { top: 75%; left: 20%; animation-delay: 1s; }
+.light:nth-child(4) { top: 80%; left: 80%; animation-delay: 1.5s; }
+.light:nth-child(5) { top: 50%; left: 8%; animation-delay: 2s; }
+.light:nth-child(6) { top: 45%; left: 92%; animation-delay: .8s; }
+.light:nth-child(7) { top: 10%; left: 50%; animation-delay: 1.2s; }
+.light:nth-child(8) { top: 90%; left: 50%; animation-delay: .3s; }
+
+.confetti {
+    position: absolute;
+    top: -20px;
+    width: 9px;
+    height: 15px;
+    background: #d5a5ff;
+    animation: confettiFall 4s linear infinite;
+}
+
+.confetti:nth-child(9) { left: 10%; animation-delay: 0s; }
+.confetti:nth-child(10) { left: 25%; animation-delay: 1s; background: #fff; }
+.confetti:nth-child(11) { left: 40%; animation-delay: 2s; }
+.confetti:nth-child(12) { left: 60%; animation-delay: .5s; background: #8e62ff; }
+.confetti:nth-child(13) { left: 75%; animation-delay: 1.5s; }
+.confetti:nth-child(14) { left: 90%; animation-delay: 2.5s; background: #fff; }
+
+@keyframes screenAppear {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes titleAppear {
+    0% {
+        opacity: 0;
+        transform: scale(.5);
+        filter: blur(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: .2; transform: scale(.7); }
+    50% { opacity: 1; transform: scale(1.8); }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
 }
 
 @media print {
@@ -322,11 +489,7 @@ footer {
             Zapoznałem/am się z informacją i akceptuję jej treść.
         </label>
 
-        <button
-            id="continueButton"
-            onclick="continueToQuiz()"
-            disabled
-        >
+        <button id="continueButton" onclick="continueToQuiz()" disabled>
             Przechodzę do quizu!
         </button>
     </div>
@@ -344,168 +507,60 @@ footer {
 
             <div class="question">
                 <h3>1. Gdzie mieszka Szymon Łyczko?</h3>
-
-                <label class="answer">
-                    <input type="radio" name="q1" value="A">
-                    A. Ząbki
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q1" value="B">
-                    B. Tczew
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q1" value="C">
-                    C. Zielonki
-                </label>
+                <label class="answer"><input type="radio" name="q1" value="A"> A. Ząbki</label>
+                <label class="answer"><input type="radio" name="q1" value="B"> B. Tczew</label>
+                <label class="answer"><input type="radio" name="q1" value="C"> C. Zielonki</label>
             </div>
-
 
             <div class="question">
                 <h3>2. Kto jest tatą Szymona?</h3>
-
-                <label class="answer">
-                    <input type="radio" name="q2" value="A">
-                    A. Dariusz
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q2" value="B">
-                    B. Tymon
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q2" value="C">
-                    C. Seweryn Koparka
-                </label>
+                <label class="answer"><input type="radio" name="q2" value="A"> A. Dariusz</label>
+                <label class="answer"><input type="radio" name="q2" value="B"> B. Tymon</label>
+                <label class="answer"><input type="radio" name="q2" value="C"> C. Seweryn Koparka</label>
             </div>
-
 
             <div class="question">
                 <h3>3. Czym zamawiamy Tymona Łyczko?</h3>
-
-                <label class="answer">
-                    <input type="radio" name="q3" value="A">
-                    A. Tirem
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q3" value="B">
-                    B. Paczką
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q3" value="C">
-                    C. Z odbiorem osobistym
-                </label>
+                <label class="answer"><input type="radio" name="q3" value="A"> A. Tirem</label>
+                <label class="answer"><input type="radio" name="q3" value="B"> B. Paczką</label>
+                <label class="answer"><input type="radio" name="q3" value="C"> C. Z odbiorem osobistym</label>
             </div>
-
 
             <div class="question">
                 <h3>4. Kto jest panią lekkich obyczajów w jego rodzinie?</h3>
-
-                <label class="answer">
-                    <input type="radio" name="q4" value="A">
-                    A. Siostra
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q4" value="B">
-                    B. Mama
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q4" value="C">
-                    C. Obydwaj
-                </label>
+                <label class="answer"><input type="radio" name="q4" value="A"> A. Siostra</label>
+                <label class="answer"><input type="radio" name="q4" value="B"> B. Mama</label>
+                <label class="answer"><input type="radio" name="q4" value="C"> C. Obydwaj</label>
             </div>
-
 
             <div class="question">
                 <h3>5. Jaki nick ma Szymon Łyczko w Minecraft?</h3>
-
-                <label class="answer">
-                    <input type="radio" name="q5" value="A">
-                    A. Cookbyboba
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q5" value="B">
-                    B. Szymonek67
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q5" value="C">
-                    C. Szczypalo_maczeciarz
-                </label>
+                <label class="answer"><input type="radio" name="q5" value="A"> A. Cookbyboba</label>
+                <label class="answer"><input type="radio" name="q5" value="B"> B. Szymonek67</label>
+                <label class="answer"><input type="radio" name="q5" value="C"> C. Szczypalo_maczeciarz</label>
             </div>
-
 
             <div class="question">
                 <h3>6. Dlaczego Szymon ma lagi?</h3>
-
-                <label class="answer">
-                    <input type="radio" name="q6" value="A">
-                    A. Bo ma internet z GigaInternet
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q6" value="B">
-                    B. Bo Tymon przegryzł kabel
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q6" value="C">
-                    C. Bo trzyma router
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q6" value="D">
-                    D. Wszystkie są poprawne
-                </label>
+                <label class="answer"><input type="radio" name="q6" value="A"> A. Bo ma internet z GigaInternet</label>
+                <label class="answer"><input type="radio" name="q6" value="B"> B. Bo Tymon przegryzł kabel</label>
+                <label class="answer"><input type="radio" name="q6" value="C"> C. Bo trzyma router</label>
+                <label class="answer"><input type="radio" name="q6" value="D"> D. Wszystkie są poprawne</label>
             </div>
-
 
             <div class="question">
                 <h3>7. Dlaczego Szymon nie gra na Elfmc.aternos.me?</h3>
-
-                <label class="answer">
-                    <input type="radio" name="q7" value="A">
-                    A. Bo grzeje spawna
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q7" value="B">
-                    B. Bo się boi Bossa Japko_00
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q7" value="C">
-                    C. Bo nie ma premki
-                </label>
+                <label class="answer"><input type="radio" name="q7" value="A"> A. Bo grzeje spawna</label>
+                <label class="answer"><input type="radio" name="q7" value="B"> B. Bo się boi Bossa Japko_00</label>
+                <label class="answer"><input type="radio" name="q7" value="C"> C. Bo nie ma premki</label>
             </div>
-
 
             <div class="question">
                 <h3>8. Od kogo dostaniesz zaraz na pizde?</h3>
-
-                <label class="answer">
-                    <input type="radio" name="q8" value="A">
-                    A. Szymon
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q8" value="B">
-                    B. Dariusz
-                </label>
-
-                <label class="answer">
-                    <input type="radio" name="q8" value="C">
-                    C. Tymon
-                </label>
+                <label class="answer"><input type="radio" name="q8" value="A"> A. Szymon</label>
+                <label class="answer"><input type="radio" name="q8" value="B"> B. Dariusz</label>
+                <label class="answer"><input type="radio" name="q8" value="C"> C. Tymon</label>
             </div>
-
 
             <button type="button" onclick="checkAnswers()">
                 Sprawdź wynik!
@@ -569,12 +624,9 @@ footer {
             <div class="certificate" id="certificate">
 
                 <h2>🏆 CERTYFIKAT 🏆</h2>
-
                 <h3>WIEDZY O ŁYCZKOWSKICH</h3>
 
-                <p>
-                    Niniejszym potwierdza się, że
-                </p>
+                <p>Niniejszym potwierdza się, że</p>
 
                 <div class="playerName" id="certificateNick">
                     Tajemniczy Gracz
@@ -593,9 +645,7 @@ footer {
                     oraz całym Imperium Zielonek.
                 </p>
 
-                <p>
-                    <strong>Niech Imperium Zielonek trwa! 👑</strong>
-                </p>
+                <p><strong>Niech Imperium Zielonek trwa! 👑</strong></p>
 
             </div>
 
@@ -610,6 +660,76 @@ footer {
     <footer>
         Imperium Zielonek © Quiz stworzony dla zabawy
     </footer>
+
+</div>
+
+
+<!-- SEKRETNE ZAKOŃCZENIE -->
+<div id="secretEnding">
+
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+
+    <div class="endingContent">
+
+        <div class="endingSmall">
+            IMPERIUM ZIELONEK • TAJNE ARCHIWUM
+        </div>
+
+        <h1 id="endingTitle">
+            ODKRYŁEŚ PRAWDĘ...
+        </h1>
+
+        <div id="endingReveal">
+
+            <p class="endingStory">
+                Przez cały ten czas znałeś historię,
+                znałeś postacie i znałeś legendy...
+            </p>
+
+            <span class="endingBig">
+                ALE NIE ZNAŁEŚ POCZĄTKU.
+            </span>
+
+            <p class="endingStory">
+                Wszystko zaczęło się od jednego miejsca.
+                Miejsca, które dało początek całemu Imperium.
+            </p>
+
+            <span class="endingBig">
+                SERWER DISCORD.
+            </span>
+
+            <p class="endingStory">
+                Teraz znasz już prawdę.
+                Historia Imperium Zielonek nie ma przed Tobą tajemnic.
+            </p>
+
+            <div class="endingRank">
+                👑 NOWA RANGA<br><br>
+                ZAŁOŻYCIEL IMPERIUM
+            </div>
+
+            <button id="returnButton" onclick="returnToEmpire()">
+                Powróć do Imperium 👑
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
@@ -672,6 +792,7 @@ function checkAnswers() {
     let unanswered = 0;
 
     for (let question in correctAnswers) {
+
         const selected = document.querySelector(
             'input[name="' + question + '"]:checked'
         );
@@ -768,14 +889,63 @@ function checkSecretAnswer() {
     const feedback = document.getElementById("secretFeedback");
 
     if (correctAnswers.includes(answer)) {
+
         feedback.textContent =
-            "🎉 BRAWO! ODKRYŁEŚ POCZĄTEK IMPERIUM ZIELONEK!";
+            "✅ Odpowiedź poprawna! Przygotuj się...";
+
         feedback.style.color = "#70ff9b";
+
+        // Zablokowanie ponownego uruchomienia animacji
+        document.querySelector("#secretQuestion button").disabled = true;
+
+        // Uruchomienie sekretnego zakończenia
+        setTimeout(startSecretEnding, 1200);
+
     } else {
+
         feedback.textContent =
             "❌ Nie tym razem... Spróbuj jeszcze raz!";
+
         feedback.style.color = "#ff7777";
     }
+}
+
+
+// ROZPOCZĘCIE SEKRETNEGO ZAKOŃCZENIA
+function startSecretEnding() {
+
+    const ending = document.getElementById("secretEnding");
+    const reveal = document.getElementById("endingReveal");
+
+    ending.classList.add("active");
+
+    // Najpierw pokazuje się tajemniczy napis.
+    // Po chwili odsłania się cała historia.
+    setTimeout(function() {
+        reveal.classList.add("show");
+    }, 2500);
+}
+
+
+// POWRÓT DO IMPERIUM
+function returnToEmpire() {
+
+    document.getElementById("secretEnding").classList.remove("active");
+
+    // Aktualizacja rangi po odkryciu tajemnicy
+    document.getElementById("playerRank").textContent =
+        "👑 Twoja ranga: ZAŁOŻYCIEL IMPERIUM";
+
+    // Zmiana komunikatu przy tajnym pytaniu
+    document.getElementById("secretFeedback").textContent =
+        "🏆 Tajemnica odkryta! Jesteś Założycielem Imperium Zielonek!";
+
+    document.getElementById("secretFeedback").style.color = "#70ff9b";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
 
