@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -452,6 +453,27 @@ footer {
                 </label>
             </div>
 
+
+            <div class="question">
+                <h3>8. Od kogo dostaniesz zaraz na pizde?</h3>
+
+                <label class="answer">
+                    <input type="radio" name="q8" value="A">
+                    A. Szymon
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q8" value="B">
+                    B. Dariusz
+                </label>
+
+                <label class="answer">
+                    <input type="radio" name="q8" value="C">
+                    C. Tymon
+                </label>
+            </div>
+
+
             <button type="button" onclick="checkAnswers()">
                 Sprawdź wynik!
             </button>
@@ -472,7 +494,7 @@ footer {
             <h1>🏆 Gratulacje!</h1>
 
             <p class="subtitle">
-                Odblokowano specjalny certyfikat za wynik 7/7!
+                Odblokowano specjalny certyfikat za wynik 8/8!
             </p>
 
             <input
@@ -502,7 +524,7 @@ footer {
                     quizie Imperium Zielonek!
                 </p>
 
-                <div class="score">7 / 7 PUNKTÓW</div>
+                <div class="score">8 / 8 PUNKTÓW</div>
 
                 <p>
                     Osoba ta wykazała się doskonałą wiedzą
@@ -581,7 +603,8 @@ function checkAnswers() {
         q4: "C",
         q5: "A",
         q6: "D",
-        q7: "B"
+        q7: "B",
+        q8: "B"
     };
 
     let score = 0;
@@ -608,15 +631,15 @@ function checkAnswers() {
     document.getElementById("result").style.display = "block";
 
     document.getElementById("scoreText").textContent =
-        "Twój wynik: " + score + "/7";
+        "Twój wynik: " + score + "/8";
 
     let message = "";
 
-    if (score === 7) {
+    if (score === 8) {
         message = "LEGENDARNY WYNIK! Znasz Szymona lepiej niż on sam! 🏆";
-    } else if (score === 6) {
+    } else if (score === 7) {
         message = "Hahahahahahahahahahaha 6 7 ouuuuuu cziki boiii tuff six seven";
-    } else if (score === 5) {
+    } else if (score === 6 || score === 5) {
         message = "Bardzo dobrze! Znasz Szymona! 😎";
     } else if (score >= 3) {
         message = "Całkiem nieźle, ale mogło być lepiej 😂";
@@ -626,8 +649,8 @@ function checkAnswers() {
 
     document.getElementById("resultMessage").textContent = message;
 
-    // CERTYFIKAT TYLKO ZA 7/7
-    if (score === 7) {
+    // CERTYFIKAT TYLKO ZA 8/8
+    if (score === 8) {
         document.getElementById("certificateSection").style.display = "block";
         updateCertificate();
     } else {
