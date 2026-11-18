@@ -119,6 +119,39 @@ button:disabled {
     color: #d8c5ff;
 }
 
+.rank {
+    margin-top: 12px;
+    padding: 12px;
+    background: #343052;
+    border-radius: 10px;
+    color: #d8c5ff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#secretQuestion {
+    display: none;
+    margin-top: 25px;
+    padding: 20px;
+    background: #30264f;
+    border: 1px solid #a45de0;
+    border-radius: 15px;
+}
+
+#secretAnswer {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 9px;
+    border: 1px solid #777;
+    font-size: 16px;
+}
+
+#secretFeedback {
+    font-weight: bold;
+    margin-top: 12px;
+}
+
 #certificateSection {
     display: none;
     margin-top: 30px;
@@ -485,6 +518,34 @@ footer {
         <div id="result">
             <h2 id="scoreText"></h2>
             <p id="resultMessage"></p>
+            <div id="playerRank" class="rank"></div>
+        </div>
+
+
+        <!-- TAJNE PYTANIE -->
+        <div id="secretQuestion">
+            <h2>🔒 TAJEMNICA IMPERIUM</h2>
+
+            <p class="subtitle">
+                Udało Ci się zdobyć 8/8!
+                Odblokowałeś tajne pytanie.
+            </p>
+
+            <div class="question">
+                <h3>Od czego to się wszystko zaczęło?</h3>
+
+                <input
+                    type="text"
+                    id="secretAnswer"
+                    placeholder="Wpisz swoją odpowiedź..."
+                >
+
+                <button type="button" onclick="checkSecretAnswer()">
+                    Sprawdź odpowiedź!
+                </button>
+
+                <p id="secretFeedback"></p>
+            </div>
         </div>
 
 
@@ -611,7 +672,6 @@ function checkAnswers() {
     let unanswered = 0;
 
     for (let question in correctAnswers) {
-
         const selected = document.querySelector(
             'input[name="' + question + '"]:checked'
         );
@@ -649,6 +709,31 @@ function checkAnswers() {
 
     document.getElementById("resultMessage").textContent = message;
 
+
+    // SYSTEM RANG
+    let rank = "";
+
+    if (score <= 2) {
+        rank = "🚶 Turysta z Tczewa";
+    } else if (score <= 4) {
+        rank = "🏘️ Obywatel Zielonek";
+    } else if (score <= 6) {
+        rank = "🤝 Prawa ręka Szymona";
+    } else if (score === 7) {
+        rank = "👑 Legenda Imperium";
+    } else {
+        rank = "🏆 Sam Dariusz";
+    }
+
+    document.getElementById("playerRank").textContent =
+        "Twoja ranga: " + rank;
+
+
+    // TAJNE PYTANIE TYLKO ZA 8/8
+    document.getElementById("secretQuestion").style.display =
+        score === 8 ? "block" : "none";
+
+
     // CERTYFIKAT TYLKO ZA 8/8
     if (score === 8) {
         document.getElementById("certificateSection").style.display = "block";
@@ -661,6 +746,36 @@ function checkAnswers() {
         top: document.body.scrollHeight,
         behavior: "smooth"
     });
+}
+
+
+// SPRAWDZANIE TAJNEGO PYTANIA
+function checkSecretAnswer() {
+
+    const answer = document
+        .getElementById("secretAnswer")
+        .value
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ");
+
+    const correctAnswers = [
+        "serwer discord",
+        "serwer dc",
+        "libertalia"
+    ];
+
+    const feedback = document.getElementById("secretFeedback");
+
+    if (correctAnswers.includes(answer)) {
+        feedback.textContent =
+            "🎉 BRAWO! ODKRYŁEŚ POCZĄTEK IMPERIUM ZIELONEK!";
+        feedback.style.color = "#70ff9b";
+    } else {
+        feedback.textContent =
+            "❌ Nie tym razem... Spróbuj jeszcze raz!";
+        feedback.style.color = "#ff7777";
+    }
 }
 
 
